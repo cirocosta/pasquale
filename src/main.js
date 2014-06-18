@@ -1,24 +1,42 @@
 'use strict';
 
-var Q = require('q')
-	,	fs = require('fs')
+var fs = require('fs')
+	,	path = require('path')
+	,	Q = require('q')
+	,	unicodeHack = require('../lib/unicode_hack')
+	,	langMap = require('./lang-mapping.json')
 	,	Spellcheck = require('spellcheck');
 
-function Pasquale (affPath, dicPath) {
-	if (!(affPath || dicPath) ||
-	    !(affPath.match(/\.aff$/) || dicPath.match(/\.aff$/)))
+function Pasquale () {}
+
+Pasquale.prototype.setLanguage = function(lang) {
+	var langPaths = langMap[lang]
+		,	dictPath = ''
+		, affPath = ''
+		, dicPath = '';
+
+	if (!langPaths) throw new Error('No path defined for this language');
+
+	dictPath = path.resolve(__dirname, '../bower_components/Dictionaries');
+	affPath = path.join(dictPath, langPaths.aff);
+	dicPath = path.join(dictPath, langPaths.dic);
+
+	if (!(affPath.match(/\.aff$/) || dicPath.match(/\.aff$/)))
 		throw new Error('.aff and a .dic files must be specified');
 
 	if (!(fs.existsSync(affPath) || fs.existsSync(dicPath)))
 		throw new Error('Both of the specified files must exist');
 
 	this.sp = new Spellcheck(affPath, dicPath);
-}
+};
 
 Pasquale.prototype.checkTextSpell = function (text) {
-	var words = text.match(/\w+/g)
+	var regex = unicodeHack(/\p{L}+/g)
+		,	words = []
 		,	scope = this
 		,	promises = [];
+
+	words = text.match(regex);
 
 	words.forEach(function (word) {
 		if (isNaN(+word)) {

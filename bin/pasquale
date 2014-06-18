@@ -2,10 +2,8 @@
 
 'use strict';
 
-var path = require('path')
-	,	yargs = require('yargs')
+var yargs = require('yargs')
 	,	Pasquale = require('../src/main')
-	,	langMap = require('../src/lang-mapping.json')
 	,	argv = null
 	,	pasquale = null;
 
@@ -27,18 +25,20 @@ argv = yargs
 	})
 	.argv;
 
+var lang = argv.l || argv.lang
+	,	text = argv.t || argv.text || argv._.join(' ');
 
-if (argv.h || argv.help) {
+if (argv.h || argv.help || !text) {
 	yargs.showHelp();
 	process.exit(0);
 }
 
-var lang = argv.l || argv.lang
-	,	text = argv.t || argv.text || argv._.join(' ');
-
 /**
  * Main
  */
+
+pasquale = new Pasquale();
+pasquale.setLanguage(lang);
 
 if (process.stdin.isTTY) handleTTY();
 else handlePipe();
@@ -47,24 +47,10 @@ else handlePipe();
  * Control Functions
  */
 
-function checkTextSpell (lang, text) {
-	var langPaths = langMap[lang]
-		,	dictPath = ''
-		,	spell = null;
-
-	if (!langPaths) throw new Error('No path defined for this language');
-
-	dictPath = path.resolve(__dirname, '../bower_components/Dictionaries') + '/';
-	pasquale = new Pasquale(dictPath + langPaths.aff,
-	               dictPath + langPaths.dic);
-
+function handlePipe () {
 	pasquale.checkTextSpell(text);
 }
 
-function handlePipe () {
-
-}
-
 function handleTTY () {
-	checkTextSpell(lang, text);
+	pasquale.checkTextSpell(text);
 }
