@@ -1,14 +1,28 @@
 'use strict';
 
-var Q = require('q');
+var Q = require('q')
+	,	fs = require('fs')
+	,	Spellcheck = require('spellcheck');
 
-function checkTextSpell (sp, text) {
+function Pasquale (affPath, dicPath) {
+	if (!(affPath || dicPath) ||
+	    !(affPath.match(/\.aff$/) || dicPath.match(/\.aff$/)))
+		throw new Error('.aff and a .dic files must be specified');
+
+	if (!(fs.existsSync(affPath) || fs.existsSync(dicPath)))
+		throw new Error('Both of the specified files must exist');
+
+	this.sp = new Spellcheck(affPath, dicPath);
+}
+
+Pasquale.prototype.checkTextSpell = function (text) {
 	var words = text.match(/\w+/g)
+		,	scope = this
 		,	promises = [];
 
 	words.forEach(function (word) {
 		if (isNaN(+word)) {
-			promises.push(checkWordSpell(sp, word));
+			promises.push(scope.checkWordSpell(word));
 		}
 	});
 
@@ -16,32 +30,19 @@ function checkTextSpell (sp, text) {
 		.then(function (results) {
 			console.log(results);
 		});
-}
+};
 
-function checkWordSpell (sp, word) {
+Pasquale.prototype.checkWordSpell = function (word) {
 	var dfd = Q.defer();
 
-	sp.check(word, function (err, correct, suggestions) {
+	this.sp.check(word, function (err, correct, suggestions) {
 		if (err) dfd.reject(err);
 
-		if (correct) dfd.resolve({correct: true});
-		else dfd.resolve({correct: false, suggestions: suggestions});
+		if (correct) dfd.resolve({word: word, correct: true});
+		else dfd.resolve({word: word, correct: false, suggestions: suggestions});
 	});
 
 	return dfd.promise;
-}
+};
 
-exports.checkTextSpell = checkTextSpell;
-
-// var dictPath = path.resolve(__dirname, '../bower_components/Dictionaries/');
-
-// spell = new SP(paths.ptBr.aff, paths.ptBr.dic);
-
-// spell.check('this', function (err, correct, suggestions) {
-// 	if (err) throw err;
-
-// 	if (correct)
-// 		console.log("correctly spelled!");
-// 	else
-// 		console.log(suggestions);
-// });
+module.exports = Pasquale;

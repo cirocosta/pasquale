@@ -38,3 +38,16 @@ Using the default (`bower_components/Dictionaries`), the supported languages are
 | Svenska               |       |
 | Tiếng Việt            |       |
 | Українська            |       |
+
+
+## TODO
+
+-	[] verificar problemas com utf8
+-	[] expor no `--help` o mapeamento de lingua/lang-code
+-	[] definir um bom formato de saída para os resultados (p/ linha e p/ multilinhas - texto)
+-	[] paralelizar a operação de checagem
+
+
+#### LICENSE
+
+**MIT LICENSE**
