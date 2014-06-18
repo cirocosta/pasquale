@@ -29,7 +29,6 @@ describe('Pasquale', function () {
 			});
 		});
 
-
 		it('should have suggestions in an incorrect text', function (done) {
 			var text = 'isto está ok'
 
