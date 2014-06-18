@@ -1,3 +1,85 @@
 #!/usr/bin/env node
 
 'use strict';
+
+var path = require('path')
+	,	yargs = require('yargs')
+	,	pasquale = require('../src/main')
+	,	SP = require('../src/sp')
+	,	langMap = require('../src/lang-mapping.json')
+	,	argv = null
+	,	spell = null;
+
+/**
+ * CLI
+ */
+
+argv = yargs
+	.usage('Usage: $ pasquale --lang=[lang] [text]')
+	.example('$ pasquale --lang=pt-br istu é um testo errado')
+	.options('l', {
+		alias: 'lang',
+		default: 'pt-br',
+		description: 'The language to check spelling against'
+	})
+	.options('t', {
+		alias: 'text',
+		description: 'The text to have spelling checked against'
+	})
+	.argv;
+
+
+if (argv.h || argv.help) {
+	yargs.showHelp();
+	process.exit(0);
+}
+
+var lang = argv.l || argv.lang
+	,	text = argv.t || argv.text || argv._.join(' ');
+
+/**
+ * Main
+ */
+
+if (process.stdin.isTTY) handleTTY();
+else  handlePipe();
+
+/**
+ * Control Functions
+ */
+
+function checkTextSpell (lang, text) {
+	var langPaths = langMap[lang]
+		,	dictPath = ''
+		,	spell = null;
+
+	if (!langPaths) throw new Error('No path defined for this language');
+
+	dictPath = path.resolve(__dirname, '../bower_components/Dictionaries') + '/';
+	spell = new SP(dictPath + langPaths.aff,
+	               dictPath + langPaths.dic);
+
+	pasquale.checkTextSpell(spell, text);
+}
+
+function handlePipe () {
+
+}
+
+function handleTTY () {
+	checkTextSpell(lang, text);
+}
+
+
+// var dictPath = path.resolve(__dirname, '../bower_components/Dictionaries/');
+
+// spell = new SP(paths.ptBr.aff, paths.ptBr.dic);
+
+// spell.check('this', function (err, correct, suggestions) {
+// 	if (err) throw err;
+
+// 	if (correct)
+// 		console.log("correctly spelled!");
+// 	else
+// 		console.log(suggestions);
+// });

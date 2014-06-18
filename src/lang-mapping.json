@@ -1,0 +1,130 @@
+{
+  "catalan": {
+    "aff": "Catalan.aff",
+    "dic": "Catalan.dic"
+  },
+  "croatian": {
+    "aff": "Croatian.aff",
+    "dic": "Croatian.dic"
+  },
+  "czech": {
+    "aff": "Czech.aff",
+    "dic": "Czech.dic"
+  },
+  "danish": {
+    "aff": "Danish.aff",
+    "dic": "Danish.dic"
+  },
+  "de": {
+    "aff": "German.aff",
+    "dic": "German.dic"
+  },
+  "de-at": {
+    "aff": "German_de_AT.aff",
+    "dic": "German_de_AT.dic"
+  },
+  "de-ch": {
+    "aff": "German_de_CH.aff",
+    "dic": "German_de_CH.dic"
+  },
+  "de-de": {
+    "aff": "German_de_DE.aff",
+    "dic": "German_de_DE.dic"
+  },
+  "ducth": {
+    "aff": "Dutch.aff",
+    "dic": "Dutch.dic"
+  },
+  "en-ca": {
+    "aff": "English (Canadian).aff",
+    "dic": "English (Canadian).dic"
+  },
+  "en-gb": {
+    "aff": "English (British).aff",
+    "dic": "English (British).dic"
+  },
+  "es": {
+    "aff": "Spanish.aff",
+    "dic": "Spanish.dic"
+  },
+  "fr": {
+    "aff": "French.aff",
+    "dic": "French.dic"
+  },
+  "galego": {
+    "aff": "Galego.aff",
+    "dic": "Galego.dic"
+  },
+  "greek": {
+    "aff": "Greek.aff",
+    "dic": "Greek.dic"
+  },
+  "hungarian": {
+    "aff": "Hungarian.aff",
+    "dic": "Hungarian.dic"
+  },
+  "it": {
+    "aff": "Italian.aff",
+    "dic": "Italian.dic"
+  },
+  "lithuaninan": {
+    "aff": "Lithuanian.aff",
+    "dic": "Lithuanian.dic"
+  },
+  "mongolian": {
+    "aff": "Mongolian.aff",
+    "dic": "Mongolian.dic"
+  },
+  "norwegian": {
+    "aff": "Norwegian (Bokmal).aff",
+    "dic": "Norwegian (Bokmal).dic"
+  },
+  "norwegian-nynorsk": {
+    "aff": "Norwegian (Nynorsk).aff",
+    "dic": "Norwegian (Nynorsk).dic"
+  },
+  "po": {
+    "aff": "Polish.aff",
+    "dic": "Polish.dic"
+  },
+  "pt": {
+    "aff": "Portuguese (European).aff",
+    "dic": "Portuguese (European).dic"
+  },
+  "pt-br": {
+    "aff": "Portuguese (Brazilian).aff",
+    "dic": "Portuguese (Brazilian).dic"
+  },
+  "ro": {
+    "aff": "Romanian (Modern).aff",
+    "dic": "Romanian (Modern).dic"
+  },
+  "ro-ante": {
+    "aff": "Romanian (Ante1993).aff",
+    "dic": "Romanian (Ante1993).dic"
+  },
+  "ru": {
+    "aff": "Russian.aff",
+    "dic": "Russian.dic"
+  },
+  "slovack": {
+    "aff": "Slovak_sk_SK.aff",
+    "dic": "Slovak_sk_SK.dic"
+  },
+  "slovenian": {
+    "aff": "Slovenian.aff",
+    "dic": "Slovenian.dic"
+  },
+  "sw": {
+    "aff": "Swedish.aff",
+    "dic": "Swedish.dic"
+  },
+  "uk": {
+    "aff": "Ukrainian_uk_UA.aff",
+    "dic": "Ukrainian_uk_UA.dic"
+  },
+  "vt": {
+    "aff": "Vietnamese_vi_VN.aff",
+    "dic": "Vietnamese_vi_VN.dic"
+  }
+}

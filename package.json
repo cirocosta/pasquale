@@ -8,7 +8,8 @@
     "bin": "./bin"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/cirocosta/pasquale/issues"
   },
-  "homepage": "https://github.com/cirocosta/pasquale"
+  "homepage": "https://github.com/cirocosta/pasquale",
+  "dependencies": {
+    "q": "^1.0.1",
+    "spellcheck": "0.0.4",
+    "yargs": "^1.2.3"
+  },
+  "devDependencies": {
+    "mocha": "^1.20.1"
+  }
 }
