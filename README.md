@@ -1,6 +1,25 @@
 # pasquale
 
-> Checks for spelling errors in a given sentence
+> Checks for spelling errors in a given sentence (UNDER HEAVY DEV.)
+
+```sh
+$ npm install -g pasquale       # global (CLI rocks)
+$ npm install --save pasquale   # for your project
+```
+
+## Usage
+
+```
+Usage: $ pasquale --lang=[lang] [text]
+
+Examples:
+  $ pasquale --lang=pt-br istu é um testo errado    undefined
+
+
+Options:
+  -l, --lang  The language to check spelling against     [default: "pt-br"]
+  -t, --text  The text to have spelling checked against
+```
 
 ## Languages
 
