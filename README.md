@@ -87,6 +87,7 @@ Using the default (`bower_components/Dictionaries`), the supported languages are
 -	[x] verificar problemas com utf8 *(parece ter sido solucionado com o unicode_hack)*
 -	[ ] expor no `--help` o mapeamento de lingua/lang-code
 -	[ ] definir um bom formato de saída para os resultados (p/ linha e p/ multilinhas - texto)
+-	[ ] verificar problema com o build para node 0.11.x
 -	[ ] paralelizar a operação de checagem
 
 
