@@ -1,4 +1,4 @@
-# pasquale
+# pasquale [![Build Status](https://travis-ci.org/cirocosta/pasquale.svg?branch=master)](https://travis-ci.org/cirocosta/pasquale)
 
 > Checks for spelling errors in a given sentence (UNDER HEAVY DEV.)
 
