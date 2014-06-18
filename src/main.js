@@ -34,9 +34,11 @@ Pasquale.prototype.checkTextSpell = function (text) {
 	var regex = unicodeHack(/\p{L}+/g)
 		,	words = []
 		,	scope = this
-		,	promises = [];
+		,	promises = []
+		,	dfd = Q.defer();
 
 	words = text.match(regex);
+	if (!words) dfd.resolve([]);
 
 	words.forEach(function (word) {
 		if (isNaN(+word)) {
@@ -46,8 +48,12 @@ Pasquale.prototype.checkTextSpell = function (text) {
 
 	Q.all(promises)
 		.then(function (results) {
-			console.log(results);
+			dfd.resolve(results);
+		}, function (err) {
+			dfd.reject(err);
 		});
+
+	return dfd.promise;
 };
 
 Pasquale.prototype.checkWordSpell = function (word) {

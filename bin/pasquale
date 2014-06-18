@@ -48,9 +48,13 @@ else handlePipe();
  */
 
 function handlePipe () {
-	pasquale.checkTextSpell(text);
+	// TODO
 }
 
 function handleTTY () {
-	pasquale.checkTextSpell(text);
+	pasquale.checkTextSpell(text).then(function (results) {
+		console.log(results);
+	}, function (err) {
+		console.error(err);
+	});
 }
