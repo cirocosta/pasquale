@@ -31,20 +31,14 @@ Pasquale.prototype.setLanguage = function(lang) {
 };
 
 Pasquale.prototype.checkTextSpell = function (text) {
-	var regex = unicodeHack(/\p{L}+/g)
-		,	words = []
+	var regex = unicodeHack(/\p{L}+/gi)
 		,	scope = this
 		,	promises = []
-		,	dfd = Q.defer();
+		,	dfd = Q.defer()
+		,	match;
 
-	words = text.match(regex);
-	if (!words) dfd.resolve([]);
-
-	words.forEach(function (word) {
-		if (isNaN(+word)) {
-			promises.push(scope.checkWordSpell(word));
-		}
-	});
+	while (match = regex.exec(text), match)
+		promises.push(scope.checkWordSpell(match[0]))
 
 	Q.all(promises)
 		.then(function (results) {
