@@ -4,6 +4,20 @@ var Pasquale = require('../src/main.js')
 	,	assert = require('assert')
 	, pasquale = null;
 
+
+function suggestionFound (results) {
+	var found = false;
+
+	results.forEach(function (result) {
+		if (result.suggestions) {
+			found = true
+			return;
+		}
+	});
+
+	return found;
+}
+
 describe('Pasquale', function () {
 
 	pasquale = new Pasquale();
@@ -15,14 +29,8 @@ describe('Pasquale', function () {
 
 	describe('when checking,', function () {
 		it('should not have suggestions in a correct text', function (done) {
-			var text = 'isto está ok'
-
 			pasquale.checkTextSpell('palavras corretas').then(function (results) {
-
-				results.forEach(function (result) {
-					assert(!result.suggestions);
-				});
-
+				assert(!suggestionFound(results));
 				done();
 			}, function (err) {
 				done(err);
@@ -33,14 +41,7 @@ describe('Pasquale', function () {
 			var text = 'isto está ok'
 
 			pasquale.checkTextSpell('palavras correttas').then(function (results) {
-				var oneSuggestion = false;
-
-				results.forEach(function (result) {
-					if (result.suggestions)
-						oneSuggestion = true;
-				});
-
-				assert(oneSuggestion);
+				assert(suggestionFound(results));
 				done();
 			}, function (err) {
 				done(err);
