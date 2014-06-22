@@ -17,7 +17,7 @@ describe('Pasquale', function () {
   describe('when checking,', function () {
     it('should not have suggestions in a correct text', function (done) {
       pasquale.checkTextSpell('palavras corretas').then(function (results) {
-        assert(!(!!utils.suggestionFound(results)));
+        assert(!utils.suggestionFound(results));
         done();
       }, function (err) {
         done(err);
@@ -28,7 +28,7 @@ describe('Pasquale', function () {
       var text = 'isto está ok'
 
       pasquale.checkTextSpell('palavras correttas').then(function (results) {
-        assert(!!utils.suggestionFound(results));
+        assert(utils.suggestionFound(results));
         done();
       }, function (err) {
         done(err);
@@ -38,7 +38,7 @@ describe('Pasquale', function () {
     describe('regarding multiline texts', function () {
       var text = {
         correct: 'isto é\num texto\nmulti linha',
-        wrong: 'issto é\num testo\nmulti linha'
+        wrong: 'issto é\num tezto\nmulti linha'
       };
 
       it('should find suggestions in an incorrect text', function (done) {
@@ -55,17 +55,17 @@ describe('Pasquale', function () {
         });
       });
 
-      // describe('regarding the position of the errros', function () {
-      //  it('should be possible to get the line position', function (done) {
-      //    pasquale.checkTextSpell(text.wrong).then(function (results) {
-      //      var fstSugst = utils.suggestionFound(results);
+      describe('regarding the position of the errors', function () {
+        it('should be possible to get the line position', function (done) {
+          pasquale.checkTextSpell(text.wrong).then(function (results) {
+            var expectedPos = {l: 1, c: 3}
+              , actualPos = results[1][1].position;
 
-      //      assert(true);
-      //      done();
-      //    });
-      //  });
-
-      // });
+            assert.deepEqual(actualPos, expectedPos);
+            done();
+          });
+        });
+      });
     });
   });
 

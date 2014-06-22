@@ -36,7 +36,7 @@ Pasquale.prototype.checkTextSpell = function (text) {
     , dfd = Q.defer();
 
   for (var i in lines)
-    promises.push(this.checkLineSpell(lines[i]));
+    promises.push(this.checkLineSpell(lines[i], +i));
 
   Q.all(promises)
     .then(function (results) {
@@ -48,15 +48,17 @@ Pasquale.prototype.checkTextSpell = function (text) {
   return dfd.promise;
 };
 
-Pasquale.prototype.checkLineSpell = function (text) {
+Pasquale.prototype.checkLineSpell = function (text, lineCount) {
   var regex = unicodeHack(/\p{L}+/gi)
     , scope = this
     , promises = []
     , dfd = Q.defer()
     , match;
 
-  while (match = regex.exec(text), match)
+  while (match = regex.exec(text), match) {
+    match.line = lineCount;
     promises.push(scope.checkWordSpell(match[0], match));
+  }
 
   Q.all(promises)
     .then(function (results) {
@@ -73,14 +75,13 @@ Pasquale.prototype.checkWordSpell = function (word, opts) {
 
   this.sp.check(word, function (err, correct, suggestions) {
     if (err) dfd.reject(err);
-
     if (correct) dfd.resolve({word: word, correct: true});
     else dfd.resolve({
       word: word,
       correct: false,
       position: {
-        l: 0,
-        c: 0
+        l: opts.line,
+        c: opts.index
       },
       suggestions: suggestions
     });
