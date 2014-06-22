@@ -15,6 +15,7 @@ function suggestionFound (results) {
 		}
 	});
 
+
 	return found;
 }
 
@@ -46,6 +47,28 @@ describe('Pasquale', function () {
 			}, function (err) {
 				done(err);
 			});
+		});
+
+		describe('regarding multiline texts', function () {
+			var text = {
+				correct: 'isto é\num texto\nmulti linha',
+				wrong: 'issto é\num testo\nmulti linha'
+			};
+
+			it('should found suggestions in an incorrect text', function (done) {
+				pasquale.checkTextSpell(text.wrong).then(function (results) {
+					assert(suggestionFound(results));
+					done();
+				});
+			});
+
+			it('should found no suggestions in a correct text', function (done) {
+				pasquale.checkTextSpell(text.correct).then(function (results) {
+					assert(!suggestionFound(results));
+					done();
+				});
+			});
+
 		});
 	});
 
