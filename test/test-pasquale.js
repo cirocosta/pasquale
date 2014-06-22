@@ -2,22 +2,8 @@
 
 var Pasquale = require('../src/main.js')
 	,	assert = require('assert')
+	,	utils = require('./utils')
 	, pasquale = null;
-
-
-function suggestionFound (results) {
-	var found = false;
-
-	results.forEach(function (result) {
-		if (result.suggestions) {
-			found = true
-			return;
-		}
-	});
-
-
-	return found;
-}
 
 describe('Pasquale', function () {
 
@@ -31,7 +17,7 @@ describe('Pasquale', function () {
 	describe('when checking,', function () {
 		it('should not have suggestions in a correct text', function (done) {
 			pasquale.checkTextSpell('palavras corretas').then(function (results) {
-				assert(!suggestionFound(results));
+				assert(!(!!utils.suggestionFound(results)));
 				done();
 			}, function (err) {
 				done(err);
@@ -42,7 +28,7 @@ describe('Pasquale', function () {
 			var text = 'isto está ok'
 
 			pasquale.checkTextSpell('palavras correttas').then(function (results) {
-				assert(suggestionFound(results));
+				assert(!!utils.suggestionFound(results));
 				done();
 			}, function (err) {
 				done(err);
@@ -55,20 +41,31 @@ describe('Pasquale', function () {
 				wrong: 'issto é\num testo\nmulti linha'
 			};
 
-			it('should found suggestions in an incorrect text', function (done) {
+			it('should find suggestions in an incorrect text', function (done) {
 				pasquale.checkTextSpell(text.wrong).then(function (results) {
-					assert(suggestionFound(results));
+					assert(utils.suggestionFound(results));
 					done();
 				});
 			});
 
-			it('should found no suggestions in a correct text', function (done) {
+			it('should not find suggestions in a correct text', function (done) {
 				pasquale.checkTextSpell(text.correct).then(function (results) {
-					assert(!suggestionFound(results));
+					assert(!utils.suggestionFound(results));
 					done();
 				});
 			});
 
+			// describe('regarding the position of the errros', function () {
+			// 	it('should be possible to get the line position', function (done) {
+			// 		pasquale.checkTextSpell(text.wrong).then(function (results) {
+			// 			var fstSugst = utils.suggestionFound(results);
+
+			// 			assert(true);
+			// 			done();
+			// 		});
+			// 	});
+
+			// });
 		});
 	});
 

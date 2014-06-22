@@ -31,14 +31,12 @@ Pasquale.prototype.setLanguage = function(lang) {
 };
 
 Pasquale.prototype.checkTextSpell = function (text) {
-	var regex = unicodeHack(/\p{L}+/gi)
-		,	scope = this
+	var lines = text.split('\n')
 		,	promises = []
-		,	dfd = Q.defer()
-		,	match;
+		,	dfd = Q.defer();
 
-	while (match = regex.exec(text), match)
-		promises.push(scope.checkWordSpell(match[0]))
+	for (var i in lines)
+		promises.push(this.checkLineSpell(lines[i]));
 
 	Q.all(promises)
 		.then(function (results) {
@@ -50,14 +48,42 @@ Pasquale.prototype.checkTextSpell = function (text) {
 	return dfd.promise;
 };
 
-Pasquale.prototype.checkWordSpell = function (word) {
+Pasquale.prototype.checkLineSpell = function (text) {
+	var regex = unicodeHack(/\p{L}+/gi)
+		,	scope = this
+		,	promises = []
+		,	dfd = Q.defer()
+		,	match;
+
+	while (match = regex.exec(text), match)
+		promises.push(scope.checkWordSpell(match[0], match));
+
+	Q.all(promises)
+		.then(function (results) {
+			dfd.resolve(results);
+		}, function (err) {
+			dfd.reject(err);
+		});
+
+	return dfd.promise;
+};
+
+Pasquale.prototype.checkWordSpell = function (word, opts) {
 	var dfd = Q.defer();
 
 	this.sp.check(word, function (err, correct, suggestions) {
 		if (err) dfd.reject(err);
 
 		if (correct) dfd.resolve({word: word, correct: true});
-		else dfd.resolve({word: word, correct: false, suggestions: suggestions});
+		else dfd.resolve({
+			word: word,
+			correct: false,
+			position: {
+				l: 0,
+				c: 0
+			},
+			suggestions: suggestions
+		});
 	});
 
 	return dfd.promise;
