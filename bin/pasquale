@@ -53,7 +53,7 @@ function handlePipe () {
 
 function handleTTY () {
 	pasquale.checkTextSpell(text).then(function (results) {
-		console.log(results);
+		console.log(JSON.stringify(results, undefined, 2));
 	}, function (err) {
 		console.error(err);
 	});
