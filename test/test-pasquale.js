@@ -2,7 +2,7 @@
 
 var Pasquale = require('../src/main.js')
   , assert = require('assert')
-  , utils = require('./utils')
+  , utils = require('../src/utils')
   , pasquale = null;
 
 describe('Pasquale', function () {
