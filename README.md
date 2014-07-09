@@ -44,6 +44,21 @@ pasquale.checkTextSpell('this is greatt').then(function (results) {
 //     suggestions: [ 'great', 'greats', 'great t', 'Gretta' ] } ]
 ```
 
+## Config
+
+It is also possible to determine a default lang and other config stuff. For doing that, a `.pasqualerc` is needed. Its structure must complain the follow:
+
+```json
+{
+	"default": "pt-br",
+	"ignored": {
+		"pt-br": ["palavra1", "palavra2", "palavra3"],
+		"en-ca": ["word1", "word2"],
+		"all": ["all1"]
+	}
+}
+```
+
 ## Languages
 
 Using the default (`bower_components/Dictionaries`), the supported languages are:

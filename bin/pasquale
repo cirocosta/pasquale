@@ -3,8 +3,11 @@
 'use strict';
 
 var yargs = require('yargs')
+	,	path = require('path')
 	,	Pasquale = require('../src/main')
 	,	jsonReporter = require('../src/reporter-json')
+	,	config = require('../src/config')
+	,	cfg = config.load(path.resolve(__dirname, '../.pasqualerc'))
 	,	argv = null
 	,	pasquale = null;
 
@@ -13,11 +16,12 @@ var yargs = require('yargs')
  */
 
 argv = yargs
-	.usage('Usage: $ pasquale --lang=[lang] [text]')
-	.example('$ pasquale --lang=pt-br istu é um testo errado')
+	.usage('Checks for spelling errors.\nUsage: $0 --lang=[lang] [text]')
+	.example('$0 --lang=pt-br istu é errado', 'Finds errors in pt-br text')
+	.example('$0 --default=pt-br', 'Sets default lang to pt-br')
 	.options('l', {
 		alias: 'lang',
-		default: 'pt-br',
+		default: cfg.data.default,
 		description: 'The language to check spelling against'
 	})
 	.options('t', {
@@ -29,13 +33,38 @@ argv = yargs
 		default: 'json',
 		description: 'Specifies which reporter to use'
 	})
+	.options('d', {
+		alias: 'default',
+		description: 'Specifies which lang to be set as default. This \n' +
+								 '\t\t  one will be saved at the config file'
+	})
+	.options('i', {
+		alias: 'ignored',
+		description: 'Refers to the list of ignored words. If no other\n' +
+								 '\t\t  args, lists the ignored words. It might be\n' +
+								 '\t\t  used with --add, --remove.'
+	})
 	.argv;
 
 var lang 			= argv.l || argv.lang
 	,	reporter 	= argv.r || argv.reporter
+	,	def 			= argv.d || argv.default
 	,	text 			= argv.t || argv.text || argv._.join(' ');
 
-if (argv.h || argv.help || !text) {
+if (argv.h || argv.help) {
+	yargs.showHelp();
+	process.exit(0);
+}
+
+/**
+ * If --default arg, add the default lang
+ */
+if (def) {
+	config.add(cfg, 'default', def);
+	process.exit(0);
+}
+
+if (!text) {
 	yargs.showHelp();
 	process.exit(0);
 }
