@@ -1,7 +1,7 @@
 {
-  "location": "/home/ciro/Development/Javascript/pasquale/.pasqualerc",
-  "data": {
+    "location": "/home/ciro/Development/Javascript/pasquale/.pasqualerc",
+    "ignored": [
+        "palavra"
+    ],
     "default": "pt-br"
-  },
-  "default": "en-ca"
 }

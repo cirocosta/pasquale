@@ -21,7 +21,7 @@ argv = yargs
 	.example('$0 --default=pt-br', 'Sets default lang to pt-br')
 	.options('l', {
 		alias: 'lang',
-		default: cfg.data.default || 'en-ca',
+		default: cfg.default || 'en-ca',
 		description: 'The language to check spelling against'
 	})
 	.options('t', {
@@ -48,6 +48,7 @@ argv = yargs
 
 var lang 			= argv.l || argv.lang
 	,	reporter 	= argv.r || argv.reporter
+	,	ignored 	= argv.i || argv.ignored
 	,	def 			= argv.d || argv.default
 	,	text 			= argv.t || argv.text || argv._.join(' ');
 
@@ -60,7 +61,12 @@ if (argv.h || argv.help) {
  * If --default arg, add the default lang
  */
 if (def) {
-	config.add(cfg, 'default', def);
+	cfg = config.add(cfg, 'default', def);
+	process.exit(0);
+}
+
+if (ignored) {
+	config.add(cfg, 'ignored', ignored);
 	process.exit(0);
 }
 

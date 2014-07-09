@@ -26,14 +26,15 @@ Config.prototype.isValidLang = function(lang) {
  * @return {obj}       config obj
  */
 Config.prototype.load = function (where) {
-	var result = {location: where};
+	var result = {};
 
 	try {
-		var f = fs.readFileSync(where);
-		result.data = JSON.parse(f);
+		result = JSON.parse(fs.readFileSync(where));
 	} catch (err){
-		result.data = {};
+		result = {};
 	};
+
+	result.location = where;
 
 	return result;
 };
@@ -58,6 +59,21 @@ Config.prototype.add = function(cfg, type, value) {
 
 		default:
 			return;
+	}
+
+	fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 4));
+
+	return cfg;
+};
+
+Config.prototype.remove = function(cfg, type, value) {
+	switch (type) {
+		case 'ignored':
+			if (!(cfg.ignored && cfg.ignored.length))
+				return cfg;
+
+				cfg.ignored.splice(cfg.ignored.indexOf(value), 1);
+			break;
 	}
 
 	fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 4));
