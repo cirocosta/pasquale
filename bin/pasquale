@@ -36,21 +36,25 @@ argv = yargs
 	.options('d', {
 		alias: 'default',
 		description: 'Specifies which lang to be set as default. This \n' +
-								 '\t\t  one will be saved at the config file'
+								 '\t\t\t  one will be saved at the config file'
 	})
 	.options('i', {
 		alias: 'ignored',
 		description: 'Refers to the list of ignored words. If no other\n' +
-								 '\t\t  args, lists the ignored words. It might be\n' +
-								 '\t\t  used with --add, --remove.'
+								 '\t\t\t  args, lists the ignored words. It might be\n' +
+								 '\t\t\t  used with --add, --remove.'
+	})
+	.options('ri', {
+		alias: 'remove-ignored',
+		description: 'Removes a word from the list of ignored ones'
 	})
 	.argv;
 
-var lang 			= argv.l || argv.lang
-	,	reporter 	= argv.r || argv.reporter
-	,	ignored 	= argv.i || argv.ignored
-	,	def 			= argv.d || argv.default
-	,	text 			= argv.t || argv.text || argv._.join(' ');
+var lang 			= argv.lang
+	,	reporter 	= argv.reporter
+	,	ignored 	= argv.ignored
+	,	def 			= argv.default
+	,	text 			= argv.text || argv._.join(' ');
 
 if (argv.h || argv.help) {
 	yargs.showHelp();
@@ -66,7 +70,12 @@ if (def) {
 }
 
 if (ignored) {
-	config.add(cfg, 'ignored', ignored);
+	if (!reporter.length)
+		cfg = config.remove(cfg, 'ignored', ignored);
+	else if (reporter.length && ignored.length)
+		cfg = config.add(cfg, 'ignored', ignored);
+
+	console.log(cfg.ignored);
 	process.exit(0);
 }
 

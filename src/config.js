@@ -30,9 +30,9 @@ Config.prototype.load = function (where) {
 
 	try {
 		result = JSON.parse(fs.readFileSync(where));
-	} catch (err){
+	} catch (err) {
 		result = {};
-	};
+	}
 
 	result.location = where;
 
@@ -61,9 +61,7 @@ Config.prototype.add = function(cfg, type, value) {
 			return;
 	}
 
-	fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 4));
-
-	return cfg;
+	return this.writeConfig(cfg);
 };
 
 Config.prototype.remove = function(cfg, type, value) {
@@ -72,11 +70,19 @@ Config.prototype.remove = function(cfg, type, value) {
 			if (!(cfg.ignored && cfg.ignored.length))
 				return cfg;
 
-				cfg.ignored.splice(cfg.ignored.indexOf(value), 1);
+			cfg.ignored.splice(cfg.ignored.indexOf(value), 1);
 			break;
 	}
 
-	fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 4));
+	return this.writeConfig(cfg);
+};
+
+Config.prototype.writeConfig = function(cfg) {
+	if (!cfg.location)
+		throw new Error('Can\'t write to file: No location specified');
+
+	fs.writeFileSync(cfg.location,
+	                 JSON.stringify(cfg, undefined, 4));
 
 	return cfg;
 };

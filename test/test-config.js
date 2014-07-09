@@ -56,10 +56,10 @@ describe('config,', function () {
 
 		it('should properly remove a ignored a word', function () {
 			var location = path.resolve(__dirname, './files/config.json');
-			var cfg = config.add({location: location}, 'ignored', 'palavra');
-			cfg = config.remove(cfg, 'ignored', 'palavra');
 			var expected = {location: location, ignored: []};
+			var cfg = config.add({location: location}, 'ignored', 'palavra');
 
+			cfg = config.remove(cfg, 'ignored', 'palavra');
 			assert.deepEqual(cfg, expected);
 		});
 	});
