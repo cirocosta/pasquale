@@ -51,10 +51,7 @@ It is also possible to determine a default lang and other config stuff. For doin
 ```json
 {
 	"default": "pt-br",
-	"ignored": {
-		"pt-br": ["palavra1", "palavra2", "palavra3"],
-		"en-ca": ["word1", "word2"],
-		"all": ["all1"]
+	"ignored": ["palavra1", "palavra2", "palavra3"]
 	}
 }
 ```

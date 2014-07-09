@@ -21,7 +21,7 @@ argv = yargs
 	.example('$0 --default=pt-br', 'Sets default lang to pt-br')
 	.options('l', {
 		alias: 'lang',
-		default: cfg.data.default,
+		default: cfg.data.default || 'en-ca',
 		description: 'The language to check spelling against'
 	})
 	.options('t', {

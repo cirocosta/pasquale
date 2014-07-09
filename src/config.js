@@ -41,7 +41,10 @@ Config.prototype.load = function (where) {
 Config.prototype.add = function(cfg, type, value) {
 	switch (type) {
 		case 'ignored':
-			// todo
+			if (!cfg.ignored)
+				cfg.ignored = [];
+
+			cfg.ignored.push(value);
 			break;
 
 		case 'default':
@@ -51,9 +54,13 @@ Config.prototype.add = function(cfg, type, value) {
 				throw new Error('A valid lang should be passed. Alias or Name.');
 
 			cfg.default = Object.keys(lang)[0];
-			fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 2));
 			break;
+
+		default:
+			return;
 	}
+
+	fs.writeFileSync(cfg.location, JSON.stringify(cfg, undefined, 4));
 
 	return cfg;
 };

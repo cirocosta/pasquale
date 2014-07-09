@@ -45,5 +45,13 @@ describe('config,', function () {
 				config.add({}, 'default', 'err-er');
 			}, Error);
 		});
+
+		it('should properly push to ignored a word', function () {
+			var location = path.resolve(__dirname, './files/config.json');
+			var cfg = config.add({location: location}, 'ignored', 'palavra');
+			var expected = {location: location, ignored: ['palavra']};
+
+			assert.deepEqual(cfg, expected);
+		});
 	});
 });
