@@ -50,11 +50,7 @@ argv = yargs
 	})
 	.argv;
 
-var lang 			= argv.lang
-	,	reporter 	= argv.reporter
-	,	ignored 	= argv.ignored
-	,	def 			= argv.default
-	,	text 			= argv.text || argv._.join(' ');
+var text = argv.text || argv._.join(' ');
 
 if (argv.h || argv.help) {
 	yargs.showHelp();
@@ -64,16 +60,16 @@ if (argv.h || argv.help) {
 /**
  * If --default arg, add the default lang
  */
-if (def) {
-	cfg = config.add(cfg, 'default', def);
+if (argv.default) {
+	cfg = config.add(cfg, 'default', argv.default);
 	process.exit(0);
 }
 
-if (ignored) {
-	if (!reporter.length)
-		cfg = config.remove(cfg, 'ignored', ignored);
-	else if (reporter.length && ignored.length)
-		cfg = config.add(cfg, 'ignored', ignored);
+if (argv.ignored) {
+	if (!argv.reporter.length)
+		cfg = config.remove(cfg, 'ignored', argv.ignored);
+	else if (argv.reporter.length && argv.ignored.length)
+		cfg = config.add(cfg, 'ignored', argv.ignored);
 
 	console.log(cfg.ignored);
 	process.exit(0);
@@ -89,7 +85,7 @@ if (!text) {
  */
 
 pasquale = new Pasquale();
-pasquale.setLanguage(lang);
+pasquale.setLanguage(argv.lang);
 
 if (process.stdin.isTTY) handleTTY();
 else handlePipe();
@@ -104,7 +100,7 @@ function handlePipe () {
 
 function handleTTY () {
 	pasquale.checkTextSpell(text).then(function (results) {
-		if (reporter.toLowerCase() === 'json') {
+		if (argv.reporter.toLowerCase() === 'json') {
 			console.log(jsonReporter(results));
 		}
 	}, function (err) {
