@@ -4,6 +4,7 @@
 
 var yargs = require('yargs')
 	,	Pasquale = require('../src/main')
+	,	jsonReporter = require('../src/reporter-json')
 	,	argv = null
 	,	pasquale = null;
 
@@ -23,10 +24,16 @@ argv = yargs
 		alias: 'text',
 		description: 'The text to have spelling checked against'
 	})
+	.options('r', {
+		alias: 'reporter',
+		default: 'json',
+		description: 'Specifies which reporter to use'
+	})
 	.argv;
 
-var lang = argv.l || argv.lang
-	,	text = argv.t || argv.text || argv._.join(' ');
+var lang 			= argv.l || argv.lang
+	,	reporter 	= argv.r || argv.reporter
+	,	text 			= argv.t || argv.text || argv._.join(' ');
 
 if (argv.h || argv.help || !text) {
 	yargs.showHelp();
@@ -53,7 +60,9 @@ function handlePipe () {
 
 function handleTTY () {
 	pasquale.checkTextSpell(text).then(function (results) {
-		console.log(JSON.stringify(results, undefined, 2));
+		if (reporter.toLowerCase() === 'json') {
+			console.log(jsonReporter(results));
+		}
 	}, function (err) {
 		console.error(err);
 	});

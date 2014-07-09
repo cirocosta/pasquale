@@ -23,6 +23,7 @@ Examples:
 Options:
   -l, --lang  The language to check spelling against     [default: "pt-br"]
   -t, --text  The text to have spelling checked against
+  -r, --reporter  Specifies which reporter to use        [default: "json"]
 ```
 
 ### Code
