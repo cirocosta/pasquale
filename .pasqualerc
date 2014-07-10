@@ -5,8 +5,7 @@
         true,
         true,
         "aaa",
-        "bbb",
-        "true"
+        "bbb"
     ],
     "default": "pt-br"
 }

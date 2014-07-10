@@ -9,7 +9,8 @@ var yargs = require('yargs')
 	,	config = require('../src/config')
 	,	cfg = config.load(path.resolve(__dirname, '../.pasqualerc'))
 	,	argv = null
-	,	pasquale = null;
+	,	pasquale = null
+	,	text = null;
 
 /**
  * CLI
@@ -50,20 +51,14 @@ argv = yargs
 	})
 	.argv;
 
-var text = argv.text || argv._.join(' ');
-
-if (argv.h || argv.help) {
-	yargs.showHelp();
-	process.exit(0);
-}
+if (argv.help)
+	(yargs.showHelp(), process.exit(0));
 
 /**
  * If --default arg, add the default lang
  */
-if (argv.default) {
-	cfg = config.add(cfg, 'default', argv.default);
-	process.exit(0);
-}
+if (argv.default)
+	(cfg = config.add(cfg, 'default', argv.default), process.exit(0));
 
 if (argv.ignored) {
 	if (!argv.reporter.length)
@@ -75,10 +70,11 @@ if (argv.ignored) {
 	process.exit(0);
 }
 
-if (!text) {
-	yargs.showHelp();
-	process.exit(0);
-}
+text = argv.text || argv._.join(' ');
+
+if (!text)
+	(yargs.showHelp(), process.exit(0));
+
 
 /**
  * Main
@@ -87,8 +83,10 @@ if (!text) {
 pasquale = new Pasquale();
 pasquale.setLanguage(argv.lang);
 
-if (process.stdin.isTTY) handleTTY();
-else handlePipe();
+if (process.stdin.isTTY)
+	handleTTY();
+else
+	handlePipe();
 
 /**
  * Control Functions
@@ -100,9 +98,8 @@ function handlePipe () {
 
 function handleTTY () {
 	pasquale.checkTextSpell(text).then(function (results) {
-		if (argv.reporter.toLowerCase() === 'json') {
+		if (argv.reporter.toLowerCase() === 'json')
 			console.log(jsonReporter(results));
-		}
 	}, function (err) {
 		console.error(err);
 	});
