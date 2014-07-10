@@ -7,11 +7,13 @@ var Pasquale = require('../src/main.js')
 
 describe('Pasquale', function () {
 
-  pasquale = new Pasquale();
-  pasquale.setLanguage('pt-br');
-
   it('should be defined', function () {
     assert(!!pasquale);
+  });
+
+  beforeEach(function () {
+    pasquale = new Pasquale();
+    pasquale.setLanguage('pt-br');
   });
 
   describe('when checking,', function () {
@@ -25,13 +27,28 @@ describe('Pasquale', function () {
     });
 
     it('should have suggestions in an incorrect text', function (done) {
-      var text = 'isto está ok'
-
       pasquale.checkTextSpell('palavras correttas').then(function (results) {
         assert(utils.suggestionFound(results));
         done();
       }, function (err) {
         done(err);
+      });
+    });
+
+    describe('having ignored words', function () {
+
+      pasquale = new Pasquale({
+        ignored: 'eradas'
+      });
+      pasquale.setLanguage('pt-br');
+
+      it('should ignore an incorrect word if marked as ignored', function () {
+        pasquale.checkTextSpell('palavras eradas').then(function (results) {
+          assert(!utils.suggestionFound(results));
+          done();
+        }, function (err) {
+          done(err);
+        });
       });
     });
 

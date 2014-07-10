@@ -7,11 +7,20 @@ var fs = require('fs')
   , langMap = require('./lang-mapping.json')
   , Spellcheck = require('spellcheck');
 
-function Pasquale () {}
+/**
+ * Constructor for Pasquale.
+ * @param {object} options object containing
+ * some options to be used: ignored -> words to
+ * be ignored
+ */
+function Pasquale (options) {
+  this.options = options || {ignored: []};
+}
 
 /**
  * Sets the language to check the texts against
- * @param {string} lang The language as described in lang-mapping
+ * @param {string} lang The language as
+ * described in lang-mapping
  */
 Pasquale.prototype.setLanguage = function(lang) {
   var langPaths = langMap[lang]
@@ -35,10 +44,11 @@ Pasquale.prototype.setLanguage = function(lang) {
 };
 
 /**
- * Checks the spelling of a given text (multi or single line)
+ * Checks the spelling of a given text (multi or
+ * single line)
  * @param  {string} text The text to check
- * @return {Promise}      a promise containing the results (array of
- *                          arrays)
+ * @return {Promise}      a promise containing
+ * the results (array of arrays)
  */
 Pasquale.prototype.checkTextSpell = function (text) {
   var lines = text.split('\n')
@@ -61,8 +71,10 @@ Pasquale.prototype.checkTextSpell = function (text) {
 /**
  * Checks the spelling for a given line.
  * @param  {string} text      A line of text
- * @param  {string|number} lineCount the number of the line
- * @return {[type]}           A promisse with the results (array)
+ * @param  {string|number} lineCount the number
+ * of the line
+ * @return {[type]}           A promisse with
+ * the results (array)
  */
 Pasquale.prototype.checkLineSpell = function (text, lineCount) {
   var regex = unicodeHack(/\p{L}+/gi)
@@ -89,12 +101,17 @@ Pasquale.prototype.checkLineSpell = function (text, lineCount) {
 /**
  * Checks the spelling for a given word
  * @param  {string} word the word to check
- * @param  {obj} opts some more info about where the word was found
- * @return {promise}      A promise containing the results for the
- *                          word
+ * @param  {obj} opts some more info about where
+ * the word was found
+ * @return {promise}      A promise containing
+ * the results for the word
  */
 Pasquale.prototype.checkWordSpell = function (word, opts) {
   var dfd = Q.defer();
+
+  if (this.options.ignored.indexOf(word) > -1)
+    return (dfd.resolve({word: word, correct: true}),
+            dfd.promise);
 
   this.sp.check(word, function (err, correct, suggestions) {
     if (err) dfd.reject(err);
