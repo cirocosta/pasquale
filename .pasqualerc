@@ -1,0 +1,11 @@
+{
+    "location": "/home/ciro/Development/Javascript/pasquale/.pasqualerc",
+    "ignored": [
+        "palavra",
+        true,
+        true,
+        "aaa",
+        "bbb"
+    ],
+    "default": "pt-br"
+}

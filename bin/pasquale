@@ -3,21 +3,26 @@
 'use strict';
 
 var yargs = require('yargs')
+	,	path = require('path')
 	,	Pasquale = require('../src/main')
 	,	jsonReporter = require('../src/reporter-json')
+	,	config = require('../src/config')
+	,	cfg = config.load(path.resolve(__dirname, '../.pasqualerc'))
 	,	argv = null
-	,	pasquale = null;
+	,	pasquale = null
+	,	text = null;
 
 /**
  * CLI
  */
 
 argv = yargs
-	.usage('Usage: $ pasquale --lang=[lang] [text]')
-	.example('$ pasquale --lang=pt-br istu é um testo errado')
+	.usage('Checks for spelling errors.\nUsage: $0 --lang=[lang] [text]')
+	.example('$0 --lang=pt-br istu é errado', 'Finds errors in pt-br text')
+	.example('$0 --default=pt-br', 'Sets default lang to pt-br')
 	.options('l', {
 		alias: 'lang',
-		default: 'pt-br',
+		default: cfg.default || 'en-ca',
 		description: 'The language to check spelling against'
 	})
 	.options('t', {
@@ -29,26 +34,59 @@ argv = yargs
 		default: 'json',
 		description: 'Specifies which reporter to use'
 	})
+	.options('d', {
+		alias: 'default',
+		description: 'Specifies which lang to be set as default. This \n' +
+								 '\t\t\t  one will be saved at the config file'
+	})
+	.options('i', {
+		alias: 'ignored',
+		description: 'Refers to the list of ignored words. If no other\n' +
+								 '\t\t\t  args, lists the ignored words. It might be\n' +
+								 '\t\t\t  used with --add, --remove.'
+	})
+	.options('ri', {
+		alias: 'remove-ignored',
+		description: 'Removes a word from the list of ignored ones'
+	})
 	.argv;
 
-var lang 			= argv.l || argv.lang
-	,	reporter 	= argv.r || argv.reporter
-	,	text 			= argv.t || argv.text || argv._.join(' ');
+if (argv.help)
+	(yargs.showHelp(), process.exit(0));
 
-if (argv.h || argv.help || !text) {
-	yargs.showHelp();
+/**
+ * If --default arg, add the default lang
+ */
+if (argv.default)
+	(cfg = config.add(cfg, 'default', argv.default), process.exit(0));
+
+if (argv.ignored) {
+	if (!argv.reporter.length)
+		cfg = config.remove(cfg, 'ignored', argv.ignored);
+	else if (argv.reporter.length && argv.ignored.length)
+		cfg = config.add(cfg, 'ignored', argv.ignored);
+
+	console.log(cfg.ignored);
 	process.exit(0);
 }
+
+text = argv.text || argv._.join(' ');
+
+if (!text)
+	(yargs.showHelp(), process.exit(0));
+
 
 /**
  * Main
  */
 
 pasquale = new Pasquale();
-pasquale.setLanguage(lang);
+pasquale.setLanguage(argv.lang);
 
-if (process.stdin.isTTY) handleTTY();
-else handlePipe();
+if (process.stdin.isTTY)
+	handleTTY();
+else
+	handlePipe();
 
 /**
  * Control Functions
@@ -60,9 +98,8 @@ function handlePipe () {
 
 function handleTTY () {
 	pasquale.checkTextSpell(text).then(function (results) {
-		if (reporter.toLowerCase() === 'json') {
+		if (argv.reporter.toLowerCase() === 'json')
 			console.log(jsonReporter(results));
-		}
 	}, function (err) {
 		console.error(err);
 	});
