@@ -16,6 +16,7 @@ describe('DictManager', function () {
 			var expected = {
 			  "aff": path.join(p, "Portuguese (Brazilian).aff"),
 			  "dic": path.join(p, "Portuguese (Brazilian).dic"),
+			  "name": "Portuguese (Brazilian)",
 			  "url": "https://nodeload.github.com/pasquale-inc/dict-portuguese-brazillian/zip/master",
 			  "exists": false
 			};

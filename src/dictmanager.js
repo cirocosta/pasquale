@@ -1,11 +1,11 @@
 var download = require('download');
 var langMap = require('./lang-mapping.json');
 var path = require('path');
+var os = require('os');
 var fs = require('fs');
+var humanb = require('humanb');
 var q = require('q');
-var ProgressBar = require('progress');
 
-// 'https://nodeload.github.com/pasquale-inc/dict-portuguese-brazillian/zip/master'
 
 function DictManager () {}
 
@@ -27,28 +27,26 @@ DictManager.prototype.resolve = function (lang, dir) {
   langObj.aff = path.join(dir, langObj.aff);
   langObj.dic = path.join(dir, langObj.dic);
 
-
   if (!(fs.existsSync(langObj.aff) || fs.existsSync(langObj.dic)))
     langObj.exists = false;
 
   return langObj
 };
 
-DictManager.prototype.download = function(url, dir) {
+DictManager.prototype.download = function(url, name, dir) {
   var dfd = q.defer();
-  var req = download(url, dir, {extract: true});
+  var req = download({url: url, name: name}, dir, {extract: true});
+  var repla = os.platform() === 'win32'
+    ? '\033[0G'
+    : '\r';
 
   req.on('response', function (res) {
-    var len = +res.headers['content-length'];
-    var bar = new ProgressBar('  downloading [:bar] :percent :etas', {
-      complete: '=',
-      incomplete: ' ',
-      width: 20,
-      total: len
-    });
+    var chunkSum = 0;
+    console.log('Downloading ' + name);
 
     res.on('data', function (chunk) {
-      bar.tick(chunk.length);
+      chunkSum += chunk.length;
+      process.stdout.write(" " + humanb(chunkSum) + " Downloaded" + repla);
     });
 
     res.on('end', function () {

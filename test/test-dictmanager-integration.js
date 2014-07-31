@@ -9,8 +9,16 @@ describe('DictManager', function () {
 	});
 
 	describe('download,', function () {
-		it('should download a file and unzip it to the correct place', function () {
-			assert(false);
+		this.timeout(60000);
+
+		it('should download a file and unzip it to the correct place', function (done) {
+			var dict = dictmanager.resolve('pt-br');
+
+			dictmanager.download(dict.url, dict.name, '../dicts').then(function () {
+				done();
+			}, function (err) {
+				done(err);
+			});
 		});
 	});
 });
