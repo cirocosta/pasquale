@@ -142,6 +142,9 @@ DictManager.prototype.download = function(url, name, dir) {
     ? '\033[0G'
     : '\r';
 
+  if (!url)
+    throw new Error('A URL is needed for this operation.');
+
   req.on('response', function (res) {
     var chunkSum = 0;
     console.log('Downloading ' + name);

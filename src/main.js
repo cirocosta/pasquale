@@ -17,6 +17,7 @@ function Pasquale (options) {
   this.sp;
 }
 
+
 /**
  * Sets the language to check the texts against
  * @param {string} lang The language as
@@ -28,11 +29,11 @@ Pasquale.prototype.setLanguage = function(lang, dir) {
   var dict = dictmanager.resolve(lang, dir);
 
   if (!dict.exists)
-    throw new Error('A valid dict wasn\'t found.');
+    throw new Error('DictNotFound: A valid dict wasn\'t found.');
 
   this.sp = new Spellcheck(dict.aff, dict.dic);
 
-  return this;
+  return dict;
 };
 
 /**

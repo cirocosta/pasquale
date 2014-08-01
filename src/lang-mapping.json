@@ -38,7 +38,7 @@
   "en-ca": {
     "aff": "English (Canadian).aff",
     "dic": "English (Canadian).dic",
-    "url": "pasquale-inc/dict-english-canadian/zip/master"
+    "url": "https://nodeload.github.com/pasquale-inc/dict-english-canadian/zip/master"
   },
   "en-gb": {
     "aff": "English (British).aff",

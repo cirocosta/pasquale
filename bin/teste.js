@@ -7,9 +7,9 @@ var path = require('path');
 var pasquale = new Pasquale();
 var dictmanager = require('../src/dictmanager');
 
-console.log(
-	dictmanager.getAvaibleLanguages(
-		path.resolve(__dirname, '../dicts')));
+// console.log(
+// 	dictmanager.getAvaibleLanguages(
+// 		path.resolve(__dirname, '../dicts')));
 
 
 // pasquale

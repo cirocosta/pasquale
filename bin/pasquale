@@ -5,8 +5,10 @@
 var yargs = require('yargs')
 	,	path = require('path')
 	,	Pasquale = require('../src/main')
+	,	path = require('path')
 	,	jsonReporter = require('../src/reporter-json')
 	,	config = require('../src/config')
+	,	dictmanager = require('../src/dictmanager')
 	,	cfg = config.load(path.resolve(__dirname, '../.pasqualerc'))
 	,	argv = null
 	,	pasquale = null
@@ -81,12 +83,17 @@ if (!text)
  */
 
 pasquale = new Pasquale();
-pasquale.setLanguage(argv.lang);
-
-if (process.stdin.isTTY)
-	handleTTY();
-else
-	handlePipe();
+try {
+	pasquale.setLanguage(argv.lang);
+	if (process.stdin.isTTY)
+		handleTTY();
+	else
+		handlePipe();
+} catch (err) {
+	if (err.message.indexOf('DictNotFound') > -1) {
+		askForDownload(argv.lang);
+	}
+}
 
 /**
  * Control Functions
@@ -102,5 +109,28 @@ function handleTTY () {
 			console.log(jsonReporter(results));
 	}, function (err) {
 		console.error(err);
+	});
+}
+
+function askForDownload (lang) {
+	var readline = require('readline');
+	var rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout
+	});
+	var p = path.resolve(__dirname, '../dicts');
+	var dict = dictmanager
+			.resolve(lang, p);
+
+	console.log('Could\'t find dict ' + dict.name);
+	rl.question('Would you like to download it? (Y/n) ', function (ans) {
+		if (ans.toUpperCase() === 'N')
+			(console.log('Aborting'), process.exit(0));
+
+		dictmanager.download(dict.url, dict.name, p).then(function () {
+			console.log('Donwload Completed!');
+		});
+
+		rl.close();
 	});
 }
