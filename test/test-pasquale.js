@@ -1,19 +1,31 @@
 'use strict';
 
 var Pasquale = require('../src/main.js')
+  , dictmanager = require('../src/dictmanager')
+  , path = require('path')
   , assert = require('assert')
   , utils = require('../src/utils')
   , pasquale = null;
 
 describe('Pasquale', function () {
+  this.timeout(30000);
 
   it('should be defined', function () {
     assert(!!pasquale);
+    assert(!!dictmanager);
   });
 
-  beforeEach(function () {
-    pasquale = new Pasquale();
-    pasquale.setLanguage('pt-br');
+  it('should have the dict', function (done) {
+    var dict = dictmanager.resolve('pt-br');
+    var p = path.resolve(__dirname, '../dicts');
+
+    dictmanager.download(dict.url, dict.name, p).then(function () {
+      pasquale = new Pasquale();
+      pasquale.setLanguage('pt-br');
+      done();
+    }, function (er) {
+      done(er);
+    });
   });
 
   describe('when checking,', function () {
@@ -39,7 +51,6 @@ describe('Pasquale', function () {
       pasquale = new Pasquale({
         ignored: 'eradas'
       });
-      pasquale.setLanguage('pt-br');
 
       it('should ignore an incorrect word if marked as ignored', function () {
         pasquale.checkTextSpell('palavras eradas').then(function (results) {

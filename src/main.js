@@ -29,7 +29,7 @@ Pasquale.prototype.setLanguage = function(lang, dir) {
   var dict = dictmanager.resolve(lang, dir);
 
   if (!dict.exists)
-    throw new Error('DictNotFound: A valid dict wasn\'t found.');
+    throw new Error('DictNotFound - A valid dict wasn\'t found.');
 
   this.sp = new Spellcheck(dict.aff, dict.dic);
 

@@ -16,9 +16,13 @@ describe('DictManager', function () {
       var expected = {
         "aff": path.join(p, "English (Canadian).aff"),
         "dic": path.join(p, "English (Canadian).dic"),
-        "url": "pasquale-inc/dict-english-canadian/zip/master",
+        "url": "https://nodeload.github.com/pasquale-inc/dict-english-canadian/zip/master",
         "name": "English (Canadian)"
       };
+
+      console.log(actual);
+      console.log('\n');
+      console.log(expected);
 
       assert.deepEqual(actual, expected);
     });
