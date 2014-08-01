@@ -5,6 +5,7 @@ var fs = require('fs')
   , Q = require('q')
   , unicodeHack = require('../lib/unicode_hack')
   , langMap = require('./lang-mapping.json')
+  , dictmanager = require('./dictmanager')
   , Spellcheck = require('spellcheck');
 
 /**
@@ -15,6 +16,7 @@ var fs = require('fs')
  */
 function Pasquale (options) {
   this.options = options || {ignored: []};
+  this.sp;
 }
 
 /**
@@ -22,25 +24,17 @@ function Pasquale (options) {
  * @param {string} lang The language as
  * described in lang-mapping
  */
-Pasquale.prototype.setLanguage = function(lang) {
-  var langPaths = langMap[lang]
-    , dictPath
-    , affPath
-    , dicPath;
+Pasquale.prototype.setLanguage = function(lang, dir) {
+  dir = dir || path.resolve(__dirname, '../dicts');
 
-  if (!langPaths) throw new Error('No path defined for this language');
+  var dict = dictmanager.resolve(lang, dir);
 
-  dictPath = path.resolve(__dirname, '../bower_components/Dictionaries');
-  affPath = path.join(dictPath, langPaths.aff);
-  dicPath = path.join(dictPath, langPaths.dic);
+  if (!dict.exists)
+    throw new Error('A valid dict wasn\'t found.');
 
-  if (!(affPath.match(/\.aff$/) || dicPath.match(/\.aff$/)))
-    throw new Error('.aff and a .dic files must be specified');
+  this.sp = new Spellcheck(dict.aff, dict.dic);
 
-  if (!(fs.existsSync(affPath) || fs.existsSync(dicPath)))
-    throw new Error('Both of the specified files must exist');
-
-  this.sp = new Spellcheck(affPath, dicPath);
+  return this;
 };
 
 /**

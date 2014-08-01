@@ -36,7 +36,6 @@ describe('Pasquale', function () {
     });
 
     describe('having ignored words', function () {
-
       pasquale = new Pasquale({
         ignored: 'eradas'
       });
