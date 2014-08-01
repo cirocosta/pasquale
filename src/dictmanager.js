@@ -12,10 +12,14 @@ var download = require('download')
   , humanb = require('humanb')
   , q = require('q');
 
+/**
+ * Clones a given Object. This leads us to a
+ * more 'immutable' programming.
+ */
 function clone(obj) {
-  if (null == obj || "object" != typeof obj) return obj;
+  if (null == obj || "object" != typeof obj)
+    return obj;
 
-  // Handle Object
   if (obj instanceof Object) {
     var copy = {};
     for (var attr in obj) {
@@ -29,6 +33,11 @@ function clone(obj) {
 
 function DictManager () {}
 
+/**
+ * Gets the directory that will be generated for
+ * a dict downloaded from pasquale-inc
+ * repositories.
+ */
 DictManager.prototype._getDictDirFromUrl = function (url) {
   if (!url)
     throw new Error('An URL must be passed to get the dir of the dict from it.');
@@ -40,7 +49,13 @@ DictManager.prototype._getDictDirFromUrl = function (url) {
     : null;
 }
 
-// DIR has to be a full path
+/**
+ * Gets a representation of a dict given a
+ * language and the directory containing them
+ * @param  {string} lang the alias of a language
+ * @param  {string} dir  abs path to dicts dir
+ * @return {Object}
+ */
 DictManager.prototype.resolve = function (lang, dir) {
   var langObj = clone(langMap[lang]);
 
@@ -48,7 +63,11 @@ DictManager.prototype.resolve = function (lang, dir) {
     throw new Error('No path defined for this language.');
 
   dir = dir || path.resolve(__dirname, '../dicts');
-  dir = path.join(dir, this._getDictDirFromUrl(langObj.url));
+  try {
+    dir = path.join(dir, this._getDictDirFromUrl(langObj.url));
+  } catch (err) {
+    return langObj;
+  }
 
   langObj.name = langObj.aff.replace('.aff', '');
   langObj.aff = path.join(dir, langObj.aff);
@@ -58,6 +77,35 @@ DictManager.prototype.resolve = function (lang, dir) {
     langObj.exists = true;
 
   return langObj;
+};
+
+/**
+ * Gets a representation of what dicts are
+ * available. EXISTS is an array of dict objects
+ * that represents those that were already
+ * download and are ready to use. DOWNLOADABLE
+ * are those with an URL but were not downloaded
+ * yet.
+ * @param  {string} dir abs path to the
+ *                      directory containing the
+ *                      dicts
+ * @return {[Object]}
+ */
+DictManager.prototype.getAvaibleLanguages = function (dir) {
+  var results = {
+    exists: [],
+    downloadable: []
+  };
+
+  for (var lang in langMap) {
+    var dict = this.resolve(lang, dir);
+    if (dict.exists)
+      results.exists.push(dict);
+    else if (dict.url)
+      results.downloadable.push(dict);
+  }
+
+  return results;
 };
 
 DictManager.prototype.askForDownload = function(name) {
@@ -79,6 +127,14 @@ DictManager.prototype.askForDownload = function(name) {
   return dfd.promise;
 };
 
+/**
+ * Downloads and extracts the dir to the correct
+ * dicts folder.
+ * @param  {string} url  the url containing the
+ *                       dict
+ * @param  {string} name the name of the dict
+ * @param  {string} dir  dict's dir
+ */
 DictManager.prototype.download = function(url, name, dir) {
   var dfd = q.defer();
   var req = download({url: url, name: name}, dir, {extract: true});

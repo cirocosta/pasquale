@@ -1,10 +1,8 @@
 'use strict';
 
-var fs = require('fs')
-  , path = require('path')
+var path = require('path')
   , Q = require('q')
   , unicodeHack = require('../lib/unicode_hack')
-  , langMap = require('./lang-mapping.json')
   , dictmanager = require('./dictmanager')
   , Spellcheck = require('spellcheck');
 

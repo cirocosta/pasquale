@@ -2,12 +2,15 @@
  * Example of a question using readline.
  */
 
-var Pasquale = require('../src/main.js');
+var Pasquale = require('../src/main');
 var path = require('path');
 var pasquale = new Pasquale();
+var dictmanager = require('../src/dictmanager');
 
-pasquale.setLanguage('pt-br', path.resolve(__dirname, '../dicts'));
-pasquale.setLanguage('pt-br', path.resolve(__dirname, '../dicts'));
+console.log(
+	dictmanager.getAvaibleLanguages(
+		path.resolve(__dirname, '../dicts')));
+
 
 // pasquale
 // 	.checkTextSpell('palavras correttas')
