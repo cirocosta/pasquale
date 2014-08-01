@@ -20,10 +20,6 @@ describe('DictManager', function () {
         "name": "English (Canadian)"
       };
 
-      console.log(actual);
-      console.log('\n');
-      console.log(expected);
-
       assert.deepEqual(actual, expected);
     });
 
