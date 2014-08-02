@@ -21,8 +21,14 @@ describe('Pasquale', function () {
 
     dictmanager.download(dict.url, dict.name, p).then(function () {
       pasquale = new Pasquale();
-      pasquale.setLanguage('pt-br');
-      done();
+      setTimeout(function () {
+        try {
+          pasquale.setLanguage('pt-br');
+          done();
+        } catch (err) {
+          done(err);
+        }
+      }, 1000);
     }, function (er) {
       done(er);
     });
