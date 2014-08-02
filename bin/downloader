@@ -9,11 +9,12 @@ var path = require('path');
 if (!process.argv[2])
 	(console.log(usage), process.exit(0));
 
-var dict = dictmanager.resolve(process.argv[2]);
 var p = path.resolve(__dirname, '../dicts');
+var dict = dictmanager.resolve(process.argv[2], p);
 
 dictmanager.download(dict.url, dict.name, p).then(function () {
-	console.log(process.argv[2] + ' is now available at ../dicts!');
+	console.log(process.argv[2] + ' is now available at ' +
+							dict.aff.replace('.aff', ''));
 }, function (err) {
 	console.error('An error occurred while downloading ' + dict.name);
 	process.exit(1);

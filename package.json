@@ -1,6 +1,6 @@
 {
   "name": "pasquale",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Checks for spelling errors in a given sentence",
   "main": "src/main.js",
   "directories": {
