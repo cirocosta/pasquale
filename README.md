@@ -15,6 +15,8 @@ Check out the [cli version](github.com/cirocosta/pasquale-cli).
 
 For downloading them: `$ PASQUALE_PATH/bin/downloader [lang-alias]`.
 
+### Example
+
 ```javascript
 pasquale = new Pasquale();
 pasquale.setLanguage('en-ca');
@@ -29,6 +31,60 @@ pasquale.checkTextSpell('this is greatt').then(function (results) {
 //   { word: 'greatt',
 //     correct: false,
 //     suggestions: [ 'great', 'greats', 'great t', 'Gretta' ] } ]
+```
+
+### Reference
+
+#### Pasquale (options)
+```
+/**
+ * Constructor for Pasquale.
+ * @param {object} options object containing
+ * some options to be used: ignored -> words to
+ * be ignored
+ */
+```
+#### .setLanguage (lang, dir)
+```
+/**
+ * Sets the language to check the texts against
+ * @param {string} lang The language as
+ *                      described in lang-mapping
+ * @param {string} dir the abs path to the dicts
+ *                     dir
+ */
+```
+#### .checkTextSpell (text)
+```
+/**
+ * Checks the spelling of a given text (multi or
+ * single line)
+ * @param  {string} text The text to check
+ * @return {Promise}      a promise containing
+ * the results (array of arrays)
+ */
+```
+#### .checkLineSpell (text, lineCount)
+```
+/**
+ * Checks the spelling for a given line.
+ * @param  {string} text      A line of text
+ * @param  {string|number} lineCount the number
+ * of the line
+ * @return {Promise}   A promisse with the
+ * results (array)
+ */
+```
+#### .checkWordSpell (word, opts)
+```
+/**
+ * Checks the spelling for a given word
+ * @param  {string} word the word to check
+ * @param  {obj} opts some more info about where
+ * the word was found
+ * @return {promise}      A promise containing
+ * the results for the word
+ */
 ```
 
 ## Languages

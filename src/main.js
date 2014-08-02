@@ -21,7 +21,9 @@ function Pasquale (options) {
 /**
  * Sets the language to check the texts against
  * @param {string} lang The language as
- * described in lang-mapping
+ *                      described in lang-mapping
+ * @param {string} dir the abs path to the dicts
+ *                     dir
  */
 Pasquale.prototype.setLanguage = function(lang, dir) {
   dir = dir || path.resolve(__dirname, '../dicts');
@@ -66,8 +68,8 @@ Pasquale.prototype.checkTextSpell = function (text) {
  * @param  {string} text      A line of text
  * @param  {string|number} lineCount the number
  * of the line
- * @return {[type]}           A promisse with
- * the results (array)
+ * @return {Promise}   A promisse with the
+ * results (array)
  */
 Pasquale.prototype.checkLineSpell = function (text, lineCount) {
   var regex = unicodeHack(/\p{L}+/gi)

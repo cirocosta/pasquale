@@ -3,13 +3,13 @@
 'use strict';
 
 var dictmanager = require('dictmanager');
-var usage = '   Usage -  $ downloader [lang]';
+var usage = '   Usage -  $ downloader [lang] [dir]';
 var path = require('path');
 
 if (!process.argv[2])
 	(console.log(usage), process.exit(0));
 
-var p = path.resolve(__dirname, '../dicts');
+var p = process.argv[3] || path.resolve(__dirname, '../dicts');
 var dict = dictmanager.resolve(process.argv[2], p);
 
 dictmanager.download(dict.url, dict.name, p).then(function () {
