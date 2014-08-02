@@ -1,15 +1,13 @@
 {
   "name": "pasquale",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Checks for spelling errors in a given sentence",
-  "main": "index.js",
+  "main": "src/main.js",
   "directories": {
     "test": "test",
-    "bin": "./bin"
   },
   "scripts": {
-    "test": "mocha test",
-    "postinstall": "bower install"
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",
@@ -22,12 +20,9 @@
   },
   "homepage": "https://github.com/cirocosta/pasquale",
   "dependencies": {
-    "bower": "^1.3.5",
-    "download": "^0.1.18",
-    "humanb": "0.0.3",
+    "dictmanager": "0.0.1",
     "q": "^1.0.1",
-    "spellcheck": "0.0.4",
-    "yargs": "^1.2.3"
+    "spellcheck": "0.0.4"
   },
   "devDependencies": {
     "mocha": "^1.20.1"

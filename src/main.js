@@ -3,7 +3,7 @@
 var path = require('path')
   , Q = require('q')
   , unicodeHack = require('../lib/unicode_hack')
-  , dictmanager = require('./dictmanager')
+  , dictmanager = require('dictmanager')
   , Spellcheck = require('spellcheck');
 
 /**

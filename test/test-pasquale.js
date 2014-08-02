@@ -1,7 +1,7 @@
 'use strict';
 
 var Pasquale = require('../src/main.js')
-  , dictmanager = require('../src/dictmanager')
+  , dictmanager = require('dictmanager')
   , path = require('path')
   , assert = require('assert')
   , utils = require('../src/utils')
