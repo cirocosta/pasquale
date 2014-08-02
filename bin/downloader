@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var dictmanager = require('dictmanager');
+var usage = '   Usage -  $ downloader [lang]';
+var path = require('path');
+
+if (!process.argv[2])
+	(console.log(usage), process.exit(0));
+
+var dict = dictmanager.resolve(process.argv[2]);
+var p = path.resolve(__dirname, '../dicts');
+
+dictmanager.download(dict.url, dict.name, p).then(function () {
+	console.log(process.argv[2] + ' is now available at ../dicts!');
+}, function (err) {
+	console.error('An error occurred while downloading ' + dict.name);
+	process.exit(1);
+});

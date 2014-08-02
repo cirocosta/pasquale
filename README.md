@@ -3,38 +3,23 @@
 > Checks for spelling errors in a given sentence (UNDER HEAVY DEV.)
 
 ```sh
-$ npm install -g pasquale       # global (CLI rocks)
 $ npm install --save pasquale   # for your project
+$ npm install -g pasquale-cli   # cli version
 ```
+
+Check out the [cli version](github.com/cirocosta/pasquale-cli).
 
 ## Usage
 
-**pasquale** is intended to be used within a shell or directly in code.
-
-### Shell
-
-```
-Usage: $ pasquale --lang=[lang] [text]
-
-Examples:
-  $ pasquale --lang=pt-br istu é um testo errado    undefined
-
-
-Options:
-  -l, --lang  The language to check spelling against     [default: "pt-br"]
-  -t, --text  The text to have spelling checked against
-  -r, --reporter  Specifies which reporter to use        [default: "json"]
-```
-
-### Code
+`pasquale` is intended to be used as a module for checking spelling errors. You must, then, provide dicts for this.
 
 ```javascript
 pasquale = new Pasquale();
 pasquale.setLanguage('en-ca');
 pasquale.checkTextSpell('this is greatt').then(function (results) {
-		console.log(results);
+	console.log(results);
 }, function (err) {
-		console.error(err);
+	console.error(err);
 });
 
 // [ { word: 'this', correct: true },
