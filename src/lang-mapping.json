@@ -37,7 +37,8 @@
   },
   "en-ca": {
     "aff": "English (Canadian).aff",
-    "dic": "English (Canadian).dic"
+    "dic": "English (Canadian).dic",
+    "url": "https://nodeload.github.com/pasquale-inc/dict-english-canadian/zip/master"
   },
   "en-gb": {
     "aff": "English (British).aff",
@@ -93,7 +94,8 @@
   },
   "pt-br": {
     "aff": "Portuguese (Brazilian).aff",
-    "dic": "Portuguese (Brazilian).dic"
+    "dic": "Portuguese (Brazilian).dic",
+    "url": "https://nodeload.github.com/pasquale-inc/dict-portuguese-brazillian/zip/master"
   },
   "ro": {
     "aff": "Romanian (Modern).aff",

@@ -12,8 +12,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "dependencies": {
-    "Dictionaries": "https://github.com/SublimeText/Dictionaries.git"
-  }
+  ]
 }
